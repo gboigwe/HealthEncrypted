@@ -17,6 +17,9 @@
 
 This decentralized application (dApp) provides a secure, transparent, and patient-centric platform for managing healthcare records on the Stacks blockchain. By leveraging blockchain technology and decentralized storage solutions, we ensure data integrity, patient privacy, and seamless access for authorized healthcare providers.
 
+![image](https://github.com/user-attachments/assets/abf0f3ea-e949-4e35-affb-69459829274d)
+
+
 ## Features
 
 - **Decentralized Storage**: Medical records are encrypted and stored on IPFS, ensuring data availability and integrity.
