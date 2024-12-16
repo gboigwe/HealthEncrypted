@@ -25,6 +25,9 @@ HealthEncrypted is a decentralized application (dApp) that enables secure manage
 - HIPAA-compliant data handling and privacy protection
 - Immutable audit trails for all record access and modifications
 
+
+![17343880874226464812084337963765](https://github.com/user-attachments/assets/6e89ae4a-5af9-4dd8-97cc-2e1864b033ad)
+
 ## Architecture
 
 The project follows a modular architecture with clear separation of concerns:
