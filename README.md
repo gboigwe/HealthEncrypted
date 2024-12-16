@@ -26,7 +26,8 @@ HealthEncrypted is a decentralized application (dApp) that enables secure manage
 - Immutable audit trails for all record access and modifications
 
 
-![17343880874226464812084337963765](https://github.com/user-attachments/assets/6e89ae4a-5af9-4dd8-97cc-2e1864b033ad)
+![20241216_234041_0000](https://github.com/user-attachments/assets/5f9ebbfe-e072-4239-85cb-be371c79bcf5)
+
 
 ## Architecture
 
