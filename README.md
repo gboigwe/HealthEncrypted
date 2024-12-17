@@ -28,7 +28,6 @@ HealthEncrypted is a decentralized application (dApp) that enables secure manage
 
 ![20241216_234041_0000](https://github.com/user-attachments/assets/5f9ebbfe-e072-4239-85cb-be371c79bcf5)
 
-
 ## Architecture
 
 The project follows a modular architecture with clear separation of concerns:
@@ -131,6 +130,17 @@ npm run dev
 ```
 
 ## Development
+
+This project was developed with assistance from AI, which helped with:
+
+- Smart contract architecture and optimization
+- Frontend component structure and React hooks implementation
+- TypeScript type definitions and interfaces
+- Security pattern implementations
+- Documentation and code comments
+- Test case suggestions
+
+All AI suggestions were carefully reviewed and validated to ensure code quality, security, and best practices. The final implementation decisions and critical security features were human-verified.
 
 ### Smart Contract Development
 - Use Clarinet for contract testing and deployment
