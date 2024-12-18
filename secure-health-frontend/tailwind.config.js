@@ -20,11 +20,10 @@ export default {
           900: '#0c4a6e',
         },
       },
+      maxWidth: {
+        '8xl': '88rem',
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 }
-
-

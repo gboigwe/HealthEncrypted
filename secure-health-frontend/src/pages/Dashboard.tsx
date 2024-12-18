@@ -1,116 +1,109 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useContract } from '../hooks/useContract';
-import { 
-    DocumentTextIcon, 
-    UserGroupIcon, 
-    ClockIcon,
-    CalendarIcon
-  } from '@heroicons/react/24/outline';
 
-interface DashboardStats {
-  totalRecords: number;
-  pendingRequests: number;
-  activeProviders: number;
-  lastUpdate: string;
+interface Record {
+  id: string;
+  type: string;
+  date: string;
+  provider: string;
+  description: string;
 }
 
 export default function Dashboard() {
-  const { userData } = useAuth();
-  const { getPatientRecord } = useContract();
-  const [stats, setStats] = useState<DashboardStats>({
-    totalRecords: 0,
-    pendingRequests: 0,
-    activeProviders: 0,
-    lastUpdate: '-'
-  });
+  const { userData, isAuthenticated } = useAuth();
+  const [records, setRecords] = useState<Record[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch dashboard stats
-    const fetchStats = async () => {
+    if (!isAuthenticated) {
+      navigate('/');
+      return;
+    }
+
+    // Fetch patient records here
+    // This is a placeholder - you'll implement actual contract calls
+    const fetchRecords = async () => {
       try {
-        // Implement fetching of actual stats from the contract
-        // For now, using placeholder data
-        setStats({
-          totalRecords: 5,
-          pendingRequests: 2,
-          activeProviders: 3,
-          lastUpdate: new Date().toLocaleDateString()
-        });
+        setLoading(true);
+        // TODO: Implement contract call to fetch records
+        // For now, using mock data
+        setRecords([
+          {
+            id: '1',
+            type: 'General Checkup',
+            date: new Date().toLocaleDateString(),
+            provider: 'Dr. Smith',
+            description: 'Annual physical examination'
+          }
+        ]);
       } catch (error) {
-        console.error('Error fetching dashboard stats:', error);
+        console.error('Error fetching records:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchStats();
-  }, []);
+    fetchRecords();
+  }, [isAuthenticated, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Welcome back, {userData?.profile?.name || 'User'}
+        <h2 className="text-2xl font-bold text-gray-900">
+          Welcome, {userData?.profile?.name || 'Patient'}
         </h2>
-        <p className="mt-1 text-sm leading-6 text-gray-500">
-          Here's an overview of your health records and activities
+        <p className="mt-1 text-sm text-gray-500">
+          Manage your health records securely
         </p>
       </div>
 
-      {/* Stats */}
-      <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-          <dt>
-            <div className="absolute rounded-md bg-primary-500 p-3">
-              <DocumentTextIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </div>
-            <p className="ml-16 truncate text-sm font-medium text-gray-500">Total Records</p>
-          </dt>
-          <dd className="ml-16 flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{stats.totalRecords}</p>
-          </dd>
+      {/* Records List */}
+      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">
+            Medical Records
+          </h3>
+          <div className="mt-4">
+            {records.length === 0 ? (
+              <p className="text-gray-500">No records found.</p>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {records.map((record) => (
+                  <li key={record.id} className="py-4">
+                    <div className="flex space-x-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900">
+                          {record.type}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {record.provider} - {record.date}
+                        </p>
+                        <p className="mt-1 text-sm text-gray-500">
+                          {record.description}
+                        </p>
+                      </div>
+                      <button
+                        className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200"
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-
-        <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-          <dt>
-            <div className="absolute rounded-md bg-primary-500 p-3">
-              <ClockIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </div>
-            <p className="ml-16 truncate text-sm font-medium text-gray-500">Pending Requests</p>
-          </dt>
-          <dd className="ml-16 flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{stats.pendingRequests}</p>
-          </dd>
-        </div>
-
-        <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-          <dt>
-            <div className="absolute rounded-md bg-primary-500 p-3">
-              <UserGroupIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </div>
-            <p className="ml-16 truncate text-sm font-medium text-gray-500">Active Providers</p>
-          </dt>
-          <dd className="ml-16 flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{stats.activeProviders}</p>
-          </dd>
-        </div>
-
-        <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-          <dt>
-            <div className="absolute rounded-md bg-primary-500 p-3">
-              <CalendarIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </div>
-            <p className="ml-16 truncate text-sm font-medium text-gray-500">Last Update</p>
-          </dt>
-          <dd className="ml-16 flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{stats.lastUpdate}</p>
-          </dd>
-        </div>
-      </dl>
-
-      {/* Recent Activity */}
-      <div className="mt-8">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">Recent Activity</h3>
-        {/* Add recent activity component here */}
       </div>
     </div>
   );
